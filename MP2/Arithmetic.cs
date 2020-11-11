@@ -6,6 +6,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace MP2
@@ -50,63 +51,87 @@ namespace MP2
         /// </example>
         public static string Calculate(string expression)
         {
-            double result = double.NaN, a = 0, b = 0;
-            string op = "";
+            return null;
+        }
 
-            switch (op)
+        public static Queue<object> SYA(string expression)
+        {
+            //Creates a queue with functioning numbers
+            char[] arr = expression.ToCharArray();
+            Queue<object> expressionQueue = new Queue<object>();
+
+            for (int index = 0; index < arr.Length; index++)
             {
-                case "+":
-                    result = a + b;
-                    break;
-                case "-":
-                    result = a - b;
-                    break;
-                case "*":
-                    result = a * b;
-                    break;
-                case "/":
 
-                    if (b != 0) result = a / b;
-                    break;
-
-
-                default:
-                    break;
+                if (Char.IsDigit(arr[index]))
+                {
+                    expressionQueue.Enqueue(DigitReader(arr, ref index));
+                }
+                else expressionQueue.Enqueue(arr[index]);
             }
 
 
-            if (double.IsNaN(result)) return "Invalid expression";
-            return result.ToString();
-        }
+            //sorts the queue into a syaQueue
+            Queue<object> syaQueue = new Queue<object>();
+            Stack<object> operatorStack = new Stack<object>();
 
+            foreach (object item in expressionQueue)
+            {
+                if (item.GetType().Equals(typeof(double))) syaQueue.Enqueue(item);
+                else if (item.Equals('(')) operatorStack.Push(item);
+                else if (item.Equals('^'))
+                {
+                    if (operatorStack.Peek().Equals('^'))
+                    {
+                        syaQueue.Enqueue(operatorStack.Pop());
+                        operatorStack.Push(item);
+                    }
+                    else operatorStack.Push(item);
+                }
+                else if (item.Equals('*') || item.Equals('/'))
+                {
+                    if (operatorStack.Peek().Equals('^') || operatorStack.Peek().Equals('*') || operatorStack.Peek().Equals('/'))
+                    {
+                        syaQueue.Enqueue(operatorStack.Pop());
+                        operatorStack.Push(item);
+                    }
+                    else operatorStack.Push(item);
 
-        public static string SYA(Stack expression)
-        {
+                }
+                else if (item.Equals('+') || item.Equals('-'))
+                {
+                    if (operatorStack.Peek().Equals('^') || operatorStack.Peek().Equals('*') || operatorStack.Peek().Equals('/') || operatorStack.Peek().Equals('+') || operatorStack.Peek().Equals('-'))
+                    {
+                        syaQueue.Enqueue(operatorStack.Pop());
+                        operatorStack.Push(item);
+                    }
+                    else operatorStack.Push(item);
+
+                }
+                else if (item.Equals(')') && operatorStack.Contains('('))
+                {
+                    while (!operatorStack.Peek().Equals('(')) syaQueue.Enqueue(operatorStack.Pop());
+                    operatorStack.Pop();
+                }
+                else if (item.Equals(')') && !operatorStack.Contains('(')) throw new ArgumentException("uneven parentheses");
+            }
+
+            if (operatorStack.Contains('(')) throw new ArgumentException("unclosed parentheses");
+            while (operatorStack.Count!=0) syaQueue.Enqueue(operatorStack.Pop());
             
 
-            Stack<int> syaStack = new Stack<int>();
-            Queue<int> syaQueue = new Queue<int>();
-
-            foreach (char item in expression)
-            {
-                if (Char.IsDigit(item)) ;
-                if (item.Equals('+') || item.Equals('-') || item.Equals('*') || item.Equals('/')) ;
-            }
-
-            return null;
         }
 
-        public static Stack Reader(string expression)
+        public static double DigitReader(Char[] inputArray, ref int index)
         {
-            char[] stringArray;
-            stringArray = expression.ToCharArray();
-            StringBuilder doublebuilder = new StringBuilder();
-
-            for (int count = 0; count < stringArray.Length; count++)
+            StringBuilder sb = new StringBuilder();
+            while (index != inputArray.Length && (Char.IsDigit(inputArray[index]) || inputArray[index].Equals('.')))
             {
-
+                sb.Append(inputArray[index]);
+                index++;
             }
-            return null;
+            index -= 1;
+            return double.Parse(sb.ToString());
         }
 
     }
