@@ -54,6 +54,13 @@ namespace MP2
             return null;
         }
 
+
+        /// <summary>
+        /// Shunting-Yard Algorithm. Converts a standard form mathematical expression to a shunting-Yard expression.
+        /// </summary>
+        /// <param name="expression">The given expression to be converted.</param>
+        /// <returns> A Queue with the elements of the Shunting Yard expression. </returns>
+        /// <exception cref="ArgumentException"> Thrown when there is an error in the ordering and or syntax of the inputB equation. </exception>
         public static Queue<object> SYA(string expression)
         {
             //Creates a queue with functioning numbers
@@ -77,30 +84,21 @@ namespace MP2
 
             foreach (object item in expressionQueue)
             {
+                if (!item.GetType().Equals(typeof(double)) && !item.Equals('(') && operatorStack.Count == 0 && syaQueue.Count == 0) throw new ArgumentException("First element Invalid.");
                 if (item.GetType().Equals(typeof(double))) syaQueue.Enqueue(item);
                 else if (item.Equals('(')) operatorStack.Push(item);
-                else if (item.Equals('^'))
+                else if (item.Equals('^') && syaQueue.Count != 0)
                 {
-                    if (operatorStack.Peek().Equals('^'))
+                    if (!(operatorStack.Count == 0) && operatorStack.Peek().Equals('^'))
                     {
                         syaQueue.Enqueue(operatorStack.Pop());
                         operatorStack.Push(item);
                     }
                     else operatorStack.Push(item);
                 }
-                else if (item.Equals('*') || item.Equals('/'))
+                else if ((item.Equals('*') || item.Equals('/')) && syaQueue.Count != 0)
                 {
-                    if (operatorStack.Peek().Equals('^') || operatorStack.Peek().Equals('*') || operatorStack.Peek().Equals('/'))
-                    {
-                        syaQueue.Enqueue(operatorStack.Pop());
-                        operatorStack.Push(item);
-                    }
-                    else operatorStack.Push(item);
-
-                }
-                else if (item.Equals('+') || item.Equals('-'))
-                {
-                    if (operatorStack.Peek().Equals('^') || operatorStack.Peek().Equals('*') || operatorStack.Peek().Equals('/') || operatorStack.Peek().Equals('+') || operatorStack.Peek().Equals('-'))
+                    if (!(operatorStack.Count == 0) && (operatorStack.Peek().Equals('^') || operatorStack.Peek().Equals('*') || operatorStack.Peek().Equals('/')))
                     {
                         syaQueue.Enqueue(operatorStack.Pop());
                         operatorStack.Push(item);
@@ -108,20 +106,40 @@ namespace MP2
                     else operatorStack.Push(item);
 
                 }
-                else if (item.Equals(')') && operatorStack.Contains('('))
+                else if ((item.Equals('+') || item.Equals('-')) && syaQueue.Count != 0)
+                {
+                    if (!(operatorStack.Count == 0) && (operatorStack.Peek().Equals('^') || operatorStack.Peek().Equals('*') ||
+                        operatorStack.Peek().Equals('/') || operatorStack.Peek().Equals('+') || operatorStack.Peek().Equals('-')))
+                    {
+                        syaQueue.Enqueue(operatorStack.Pop());
+                        operatorStack.Push(item);
+                    }
+                    else operatorStack.Push(item);
+
+                }
+                else if ((item.Equals(')') && operatorStack.Contains('(')) && syaQueue.Count != 0)
                 {
                     while (!operatorStack.Peek().Equals('(')) syaQueue.Enqueue(operatorStack.Pop());
                     operatorStack.Pop();
                 }
                 else if (item.Equals(')') && !operatorStack.Contains('(')) throw new ArgumentException("uneven parentheses");
+                else throw new ArgumentException("invalid element.");
             }
 
             if (operatorStack.Contains('(')) throw new ArgumentException("unclosed parentheses");
-            while (operatorStack.Count!=0) syaQueue.Enqueue(operatorStack.Pop());
-            
+            while (operatorStack.Count != 0) syaQueue.Enqueue(operatorStack.Pop());
 
+            return syaQueue;
         }
 
+
+        /// <summary>
+        /// Mainly a helper method for SYA that reads numbers.
+        /// </summary>
+        /// <param name="inputArray"> The character array in which the method reads the number.</param>
+        /// <param name="index"> The reference index from character array. </param>
+        /// <returns> Returns the selected number embedded in the char array as a double.</returns>
+        /// <example> When referenced to the index of the first char of "22.56" will return the double(22.56) </example>
         public static double DigitReader(Char[] inputArray, ref int index)
         {
             StringBuilder sb = new StringBuilder();
@@ -136,5 +154,5 @@ namespace MP2
 
     }
 
-      
+
 }
