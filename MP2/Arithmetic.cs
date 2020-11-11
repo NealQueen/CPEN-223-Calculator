@@ -4,6 +4,9 @@
 //You should implement the requesed method.
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Text;
 
 namespace MP2
 {
@@ -47,8 +50,66 @@ namespace MP2
         /// </example>
         public static string Calculate(string expression)
         {
-            // To implement TEST
+            double result = double.NaN, a = 0, b = 0;
+            string op = "";
 
+            switch (op)
+            {
+                case "+":
+                    result = a + b;
+                    break;
+                case "-":
+                    result = a - b;
+                    break;
+                case "*":
+                    result = a * b;
+                    break;
+                case "/":
+
+                    if (b != 0) result = a / b;
+                    break;
+
+
+                default:
+                    break;
+            }
+
+
+            if (double.IsNaN(result)) return "Invalid expression";
+            return result.ToString();
         }
+
+
+        public static string SYA(Stack expression)
+        {
+            
+
+            Stack<int> syaStack = new Stack<int>();
+            Queue<int> syaQueue = new Queue<int>();
+
+            foreach (char item in expression)
+            {
+                if (Char.IsDigit(item)) ;
+                if (item.Equals('+') || item.Equals('-') || item.Equals('*') || item.Equals('/')) ;
+            }
+
+            return null;
+        }
+
+        public static Stack Reader(string expression)
+        {
+            char[] stringArray;
+            stringArray = expression.ToCharArray();
+            StringBuilder doublebuilder = new StringBuilder();
+
+            for (int count = 0; count < stringArray.Length; count++)
+            {
+
+            }
+            return null;
+        }
+
     }
+
+      
 }

@@ -29,7 +29,7 @@ namespace MP2
         /// <returns>True if the polynomial is succeffully set, false otherwise.</returns>
         public bool SetPolynomial()
         {
-
+            return false;
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace MP2
         /// <returns>True if a valid polynomial, false otherwise.</returns>
         public bool IsValidPolynomial(string polynomial)
         {
-             
+            return false;
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace MP2
         /// </exception>
         public string GetPolynomial()
         {
-             
+            return null;
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace MP2
         /// </exception>
         public double EvaluatePolynomial(double x)
         {
-             
+            return 0;
         }
 
         /// <summary>
@@ -135,7 +135,7 @@ namespace MP2
         /// </exception>
         public List<double> GetAllRoots(double epsilon)
         {
-             
+            return null;
         }
 
         /// <summary>
@@ -151,7 +151,7 @@ namespace MP2
         /// </exception>
         public double EvaluatePolynomialDerivative(double x)
         {
-             
+            return 0;
         }
 
         /// <summary>
@@ -168,7 +168,7 @@ namespace MP2
         /// </exception>
         public double EvaluatePolynomialIntegral(double a, double b)
         {
-
+            return 0;
         }
     }
 }
