@@ -6,6 +6,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace MP2
@@ -42,6 +43,11 @@ namespace MP2
             string input = Console.ReadLine();
             char[] arr = input.ToCharArray();
 
+
+            //checks for validity, and allows overwriting the set polynomolial.
+            if ( IsValidPolynomial(input) && input.Length!=0) coefficientList.Clear();
+            else return false;
+
             for ( int index = 0 ; index < arr.Length ; index++ )
             {
                 if ( arr[index].Equals('-') && Char.IsDigit(arr[index + 1]) && ( index == 0 || !char.IsDigit(arr[index - 1]) ) )
@@ -55,6 +61,7 @@ namespace MP2
 
             return true;
         }
+
 
         /// <summary>
         /// Checks if the passed polynomial string is valid.
@@ -76,6 +83,7 @@ namespace MP2
 
             for ( int index = 0 ; index < arr.Length ; index++ )
             {
+                //Digitreader is used although the return is not save because of its reference index function.
                 if ( arr[index].Equals('-') && Char.IsDigit(arr[index + 1]) && ( index == 0 || !char.IsDigit(arr[index - 1]) ) )
                 {
                     index++;
@@ -106,11 +114,16 @@ namespace MP2
         /// </exception>
         public string GetPolynomial()
         {
-            foreach ( double item in coefficientList )
+            StringBuilder polynomial = new StringBuilder();
+
+            for ( int index = 0 ; index < coefficientList.Count ; index++ )
             {
-                Console.Write(item+" ");
+                if ( index == coefficientList.Count - 1 ) polynomial.Append(coefficientList[index]);
+                else if ( coefficientList[index] != 0) polynomial.Append($"({coefficientList[index]})*X^{( coefficientList.Count - index - 1)} + ");
+             
             }
-            return null;
+          
+            return polynomial.ToString();
         }
 
 
