@@ -18,8 +18,9 @@ namespace MP2
         ///You are allowed to add constructors to be able to unit test.
         public Calculus()
         {
-
+            coefficientList = new List<double>();
         }
+
 
 
         /// <summary>
@@ -126,7 +127,7 @@ namespace MP2
             return polynomial.ToString();
         }
 
-
+        //IS OUTPUTING WRONG VALUE
         /// <summary>
         /// Evaluates this polynomial at the x passed to the method.
         /// </summary>

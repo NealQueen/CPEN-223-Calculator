@@ -137,7 +137,7 @@ namespace MP2
                     expressionQueue.Enqueue(-DigitReader(arr,ref index));
                 }
                 else if ( Char.IsDigit(arr[index]) ) expressionQueue.Enqueue(DigitReader(arr,ref index));
-                else expressionQueue.Enqueue(arr[index]);
+                else if (!Char.IsWhiteSpace(arr[index]))expressionQueue.Enqueue(arr[index]);
             }
 
 
