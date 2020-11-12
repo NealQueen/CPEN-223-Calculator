@@ -138,7 +138,16 @@ namespace MP2
         /// </exception>
         public double EvaluatePolynomial(double x)
         {
-            return 0;
+            if ( coefficientList.Count == 0 ) throw new InvalidOperationException("No polynomial is set.");
+
+            double result=0;
+            for ( int index = 0 ; index < coefficientList.Count ; index++ )
+            {
+                if ( index == coefficientList.Count - 1 ) result+=coefficientList[index];
+                else if ( coefficientList[index] != 0 ) result+= Math.Pow(x,coefficientList.Count-index-1);
+            }
+
+            return result;
         }
 
         
