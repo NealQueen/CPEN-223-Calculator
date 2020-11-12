@@ -50,8 +50,57 @@ namespace MP2
         /// or unbalanced expression, then the method returns "Invalid expression".
         /// </example>
         public static string Calculate(string expression)
-        {
-            return null;
+        { Stack<object> numberstack = new Stack<object>();
+            try
+            {
+                Queue<object> expressionQueue = SYA(expression);  
+
+                foreach (object item in expressionQueue)
+	            {
+                    if (item.GetType().Equals(typeof(double))) numberstack.Push(expressionQueue.Dequeue());
+                    if (item.Equals('+')) 
+                    {
+                        double result = Convert.ToDouble(numberstack.Pop())+ Convert.ToDouble(numberstack.Pop());
+                        numberstack.Push(result);
+                        expressionQueue.Dequeue();
+                    }
+                    if (item.Equals('-'))
+                    {
+                        double temp = Convert.ToDouble(numberstack.Pop());
+                        double result = Convert.ToDouble(numberstack.Pop())-temp;
+                        numberstack.Push(result);
+                        expressionQueue.Dequeue();
+                    }
+                    if (item.Equals('*'))
+	                {
+                        double result = Convert.ToDouble(numberstack.Pop())*Convert.ToDouble(numberstack.Pop());
+                        numberstack.Push(result);
+                        expressionQueue.Dequeue();
+	                }
+                    if (item.Equals('/'))
+	                {
+                        double temp = Convert.ToDouble(numberstack.Pop());
+                        double result = Convert.ToDouble(numberstack.Pop())/temp;
+                        numberstack.Push(result);
+                        expressionQueue.Dequeue();
+                    }
+                    if (item.Equals('^'))
+                    {
+                        double temp = Convert.ToDouble(numberstack.Pop());
+                        double result = Math.Pow(Convert.ToDouble(numberstack.Pop()),temp);
+                        numberstack.Push(result);
+                        expressionQueue.Dequeue();
+                    }
+           	    }
+
+                 if (numberstack.Count!=1) throw new ArgumentException("Result not found");
+            }
+            catch
+            {
+                return "Invalid expression";
+            }
+
+            return numberstack.Pop().ToString();
         }
 
 
