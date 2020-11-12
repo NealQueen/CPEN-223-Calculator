@@ -44,7 +44,12 @@ namespace MP2
 
             for ( int index = 0 ; index < arr.Length ; index++ )
             {
-                if ( Char.IsDigit(arr[index]) ) coefficientList.Add(Arithmetic.DigitReader(arr,ref index));
+                if ( arr[index].Equals('-') && Char.IsDigit(arr[index + 1]) && ( index == 0 || !char.IsDigit(arr[index - 1]) ) )
+                {
+                    index++;
+                    coefficientList.Add(-Arithmetic.DigitReader(arr,ref index));
+                }
+                else if ( Char.IsDigit(arr[index]) ) coefficientList.Add(Arithmetic.DigitReader(arr,ref index));
                 else if(!char.IsWhiteSpace(arr[index])) return false;
             }
 
@@ -67,7 +72,20 @@ namespace MP2
         /// <returns>True if a valid polynomial, false otherwise.</returns>
         public bool IsValidPolynomial(string polynomial)
         {
-            return false;
+            char[] arr = polynomial.ToCharArray();
+
+            for ( int index = 0 ; index < arr.Length ; index++ )
+            {
+                if ( arr[index].Equals('-') && Char.IsDigit(arr[index + 1]) && ( index == 0 || !char.IsDigit(arr[index - 1]) ) )
+                {
+                    index++;
+                    Arithmetic.DigitReader(arr,ref index);
+                }
+                else if ( Char.IsDigit(arr[index]) ) Arithmetic.DigitReader(arr,ref index);
+                else if ( !char.IsWhiteSpace(arr[index]) ) return false;
+            }
+
+            return true;
         }
 
 
@@ -88,6 +106,10 @@ namespace MP2
         /// </exception>
         public string GetPolynomial()
         {
+            foreach ( double item in coefficientList )
+            {
+                Console.Write(item+" ");
+            }
             return null;
         }
 
