@@ -6,6 +6,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq.Expressions;
 using System.Text;
 
@@ -55,37 +56,38 @@ namespace MP2
             {
                 Queue<object> expressionQueue = SYA(expression);  
 
-                //THIS NEEDS TO BE ANOTHER TYPE OF LOOP.
-                foreach(object item in expressionQueue)
-	            {
-                    if (item.GetType().Equals(typeof(double))) numberstack.Push(expressionQueue.Dequeue());
-                    if (item.Equals('+')) 
+                
+                while(expressionQueue.Count>0)
+	            {   
+
+                    if (expressionQueue.Peek().GetType().Equals(typeof(double))) numberstack.Push(expressionQueue.Dequeue());
+                    else if (expressionQueue.Peek().Equals('+')) 
                     {
                         double result = Convert.ToDouble(numberstack.Pop())+ Convert.ToDouble(numberstack.Pop());
                         numberstack.Push(result);
                         expressionQueue.Dequeue();
                     }
-                    if (item.Equals('-'))
+                    else if (expressionQueue.Peek().Equals('-'))
                     {
                         double temp = Convert.ToDouble(numberstack.Pop());
                         double result = Convert.ToDouble(numberstack.Pop())-temp;
                         numberstack.Push(result);
                         expressionQueue.Dequeue();
                     }
-                    if (item.Equals('*'))
+                    else if (expressionQueue.Peek().Equals('*'))
 	                {
                         double result = Convert.ToDouble(numberstack.Pop())*Convert.ToDouble(numberstack.Pop());
                         numberstack.Push(result);
                         expressionQueue.Dequeue();
 	                }
-                    if (item.Equals('/'))
+                    else if (expressionQueue.Peek().Equals('/'))
 	                {
                         double temp = Convert.ToDouble(numberstack.Pop());
                         double result = Convert.ToDouble(numberstack.Pop())/temp;
                         numberstack.Push(result);
                         expressionQueue.Dequeue();
                     }
-                    if (item.Equals('^'))
+                    else if (expressionQueue.Peek().Equals('^'))
                     {
                         double temp = Convert.ToDouble(numberstack.Pop());
                         double result = Math.Pow(Convert.ToDouble(numberstack.Pop()),temp);
