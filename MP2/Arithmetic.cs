@@ -55,7 +55,8 @@ namespace MP2
             {
                 Queue<object> expressionQueue = SYA(expression);  
 
-                foreach (object item in expressionQueue)
+                //THIS NEEDS TO BE ANOTHER TYPE OF LOOP.
+                foreach(object item in expressionQueue)
 	            {
                     if (item.GetType().Equals(typeof(double))) numberstack.Push(expressionQueue.Dequeue());
                     if (item.Equals('+')) 
@@ -95,8 +96,9 @@ namespace MP2
 
                  if (numberstack.Count!=1) throw new ArgumentException("Result not found");
             }
-            catch
+            catch(Exception e)
             {
+                Console.WriteLine(e+ e.Message);
                 return "Invalid expression";
             }
 
