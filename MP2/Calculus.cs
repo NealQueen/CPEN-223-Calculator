@@ -14,7 +14,12 @@ namespace MP2
     {
         List<double> coefficientList = new List<double>(); //the only field of this class
 
-        //You are allowed to add constructors to be able to unit test.
+        ///You are allowed to add constructors to be able to unit test.
+        public Calculus()
+        {
+
+        }
+
 
         /// <summary>
         /// Prompts the user for the coefficients of a polynomial, and sets the 
@@ -28,8 +33,22 @@ namespace MP2
         /// </summary>
         /// <returns>True if the polynomial is succeffully set, false otherwise.</returns>
         public bool SetPolynomial()
-        {
-            return false;
+        {   
+            //instruction Statement.
+            Console.WriteLine("\nEnter all coefficients for the polynomial seperted by a space (descending order).\nExample: Enter 2 0 3.5 -2 0 for the polynomial (2)*x^4 + (3.5)*x^2 + (-2)*x");
+
+
+            //Converts the input to a char array in order to use DigitReader method from the Arithmatic class.
+            string input = Console.ReadLine();
+            char[] arr = input.ToCharArray();
+
+            for ( int index = 0 ; index < arr.Length ; index++ )
+            {
+                if ( Char.IsDigit(arr[index]) ) coefficientList.Add(Arithmetic.DigitReader(arr,ref index));
+                else if(!char.IsWhiteSpace(arr[index])) return false;
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -51,6 +70,7 @@ namespace MP2
             return false;
         }
 
+
         /// <summary>
         /// Returns a string representing this polynomial.
         /// </summary>
@@ -71,6 +91,7 @@ namespace MP2
             return null;
         }
 
+
         /// <summary>
         /// Evaluates this polynomial at the x passed to the method.
         /// </summary>
@@ -85,39 +106,7 @@ namespace MP2
             return 0;
         }
 
-        /// <summary>
-        /// Finds a root of this polynomial using the provided guess.
-        /// </summary>
-        /// <param name="guess">The initial value for the Newton method.</param>
-        /// <param name="epsilon">The desired accuracy: stops when |f(result)| is
-        /// less than or equal epsilon.</param>
-        /// <param name="iterationMax">A max cap on the number of iterations in the
-        /// Newton-Raphson method. This is to also guarantee no infinite loops.
-        /// If this iterationMax is reached, a double.NaN is returned.</param>
-        /// <returns>
-        /// The root found using the Netwon-Raphson method. 
-        /// A double.NaN is returned if a root cannot be found.
-        /// The return value is rounded to have 4 digits after the decimal point.
-        /// </returns>
-        public double NewtonRaphson(double guess, double epsilon, int iterationMax)
-        {
-            int count = 0;
-            double x = guess;
-
-            while (Math.Abs(EvaluatePolynomial(x)) > epsilon && count < iterationMax)
-            {
-                x = x - EvaluatePolynomial(x) / EvaluatePolynomialDerivative(x);
-                count++;
-            }
-
-            if (count == iterationMax || double.IsInfinity(x)) 
-            {
-                return double.NaN;
-            }
-
-            return Math.Round(x, 4); //4 decimal places
-        }
-
+        
         /// <summary>
         /// Calculates and returns all unique real roots of this polynomial 
         /// that can be found using the NewtonRaphson method. 
@@ -138,6 +127,7 @@ namespace MP2
             return null;
         }
 
+
         /// <summary>
         /// Evaluates the 1st derivative of this polynomial at x, passed to the method.
         /// The method uses the exact numerical technique, since it is easy to obtain the 
@@ -154,6 +144,7 @@ namespace MP2
             return 0;
         }
 
+
         /// <summary>
         /// Evaluates the definite integral of this polynomial from a to b.
         /// The method uses the exact numerical technique, since it is easy to obtain the 
@@ -169,6 +160,40 @@ namespace MP2
         public double EvaluatePolynomialIntegral(double a, double b)
         {
             return 0;
+        }
+
+
+        /// <summary>
+        /// Finds a root of this polynomial using the provided guess.
+        /// </summary>
+        /// <param name="guess">The initial value for the Newton method.</param>
+        /// <param name="epsilon">The desired accuracy: stops when |f(result)| is
+        /// less than or equal epsilon.</param>
+        /// <param name="iterationMax">A max cap on the number of iterations in the
+        /// Newton-Raphson method. This is to also guarantee no infinite loops.
+        /// If this iterationMax is reached, a double.NaN is returned.</param>
+        /// <returns>
+        /// The root found using the Netwon-Raphson method. 
+        /// A double.NaN is returned if a root cannot be found.
+        /// The return value is rounded to have 4 digits after the decimal point.
+        /// </returns>
+        public double NewtonRaphson(double guess,double epsilon,int iterationMax)
+        {
+            int count = 0;
+            double x = guess;
+
+            while ( Math.Abs(EvaluatePolynomial(x)) > epsilon && count < iterationMax )
+            {
+                x = x - EvaluatePolynomial(x) / EvaluatePolynomialDerivative(x);
+                count++;
+            }
+
+            if ( count == iterationMax || double.IsInfinity(x) )
+            {
+                return double.NaN;
+            }
+
+            return Math.Round(x,4); //4 decimal places
         }
     }
 }

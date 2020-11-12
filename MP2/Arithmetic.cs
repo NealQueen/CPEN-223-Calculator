@@ -129,12 +129,14 @@ namespace MP2
             Queue<object> expressionQueue = new Queue<object>();
 
             for ( int index = 0 ; index < arr.Length ; index++ )
-            {
-
-                if ( Char.IsDigit(arr[index]) )
+            {   
+                // 'If' Statements that check every item in the array, and if a negative number exists and accordingly adds them into the queue.
+                if ( arr[index].Equals('-') && Char.IsDigit(arr[index+1]) &&( index==0 || !char.IsDigit(arr[index-1])))
                 {
-                    expressionQueue.Enqueue(DigitReader(arr,ref index));
+                    index++;
+                    expressionQueue.Enqueue(-DigitReader(arr,ref index));
                 }
+                else if ( Char.IsDigit(arr[index]) ) expressionQueue.Enqueue(DigitReader(arr,ref index));
                 else expressionQueue.Enqueue(arr[index]);
             }
 
@@ -204,7 +206,7 @@ namespace MP2
 
 
         /// <summary>
-        /// Mainly a helper method for SYA that reads numbers.
+        /// Helper method that reads numbers.
         /// </summary>
         /// <param name="inputArray"> The character array in which the method reads the number.</param>
         /// <param name="index"> The reference index from character array. </param>
@@ -213,7 +215,7 @@ namespace MP2
         public static double DigitReader(Char[] inputArray,ref int index)
         {
             StringBuilder sb = new StringBuilder();
-            while ( index != inputArray.Length && ( Char.IsDigit(inputArray[index]) || inputArray[index].Equals('.') ) )
+            while ( index != inputArray.Length && ( Char.IsDigit(inputArray[index] ) || inputArray[index].Equals('.') ) )
             {
                 sb.Append(inputArray[index]);
                 index++;
