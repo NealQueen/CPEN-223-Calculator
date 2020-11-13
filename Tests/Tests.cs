@@ -44,7 +44,7 @@ namespace Tests
         }
 
         [TestMethod()]
-        public void Calculus1() 
+        public void Calc_Setpoly_Error() 
         {
             var sr = new StringReader("error.");
             Console.SetIn(sr);
@@ -55,7 +55,7 @@ namespace Tests
         }
 
         [TestMethod()]
-        public void Calculus2()
+        public void Calc_Setpoly1()
         {
             var sr = new StringReader("2 0 3");
             Console.SetIn(sr);
@@ -66,7 +66,7 @@ namespace Tests
         }
 
         [TestMethod()]
-        public void Calculus3()
+        public void Calc_Setpoly2()
         {
             var sr = new StringReader("-0.5 3.666 558");
             Console.SetIn(sr);
@@ -77,7 +77,7 @@ namespace Tests
         }
 
         [TestMethod()]
-        public void Calculus4()
+        public void Calc_EvalPoly1()
         {
             var sr = new StringReader("2 5 9");
             Console.SetIn(sr);
@@ -86,6 +86,30 @@ namespace Tests
             calculus.SetPolynomial();
             var result = calculus.EvaluatePolynomial(2);
             Assert.AreEqual(27,result);
+        }
+
+        [TestMethod()]
+        public void Calc_EvalPoly2()
+        {
+            var sr = new StringReader("-2. 6.5 5.5 -17.5 2 5 1");
+            Console.SetIn(sr);
+            var calculus = new Calculus();
+
+            calculus.SetPolynomial();
+            var result = calculus.EvaluatePolynomial(2);
+            Assert.AreEqual(47,result);
+        }
+
+        [TestMethod()]
+        public void Calc_EvalPoly3()
+        {
+            var sr = new StringReader("-222 225 59");
+            Console.SetIn(sr);
+            var calculus = new Calculus();
+
+            calculus.SetPolynomial();
+            var result = calculus.EvaluatePolynomial(2);
+            Assert.AreEqual(-379,result);
         }
     }
 }
