@@ -111,5 +111,53 @@ namespace Tests
             var result = calculus.EvaluatePolynomial(2);
             Assert.AreEqual(-379,result);
         }
+
+        [TestMethod()]
+        public void Calc_EvalDer1()
+        {
+            var sr = new StringReader("2 0 1");
+            Console.SetIn(sr);
+            var calculus = new Calculus();
+
+            calculus.SetPolynomial();
+            var result = calculus.EvaluatePolynomialDerivative(2);
+            Assert.AreEqual(8,result);
+        }
+
+        [TestMethod()]
+        public void Calc_EvalDer2()
+        {
+            var sr = new StringReader("1");
+            Console.SetIn(sr);
+            var calculus = new Calculus();
+
+            calculus.SetPolynomial();
+            var result = calculus.EvaluatePolynomialDerivative(2);
+            Assert.AreEqual(0,result);
+        }
+
+        [TestMethod()]
+        public void Calc_EvalDer3()
+        {
+            var sr = new StringReader("2 2 0 -1");
+            Console.SetIn(sr);
+            var calculus = new Calculus();
+
+            calculus.SetPolynomial();
+            var result = calculus.EvaluatePolynomialDerivative(2);
+            Assert.AreEqual(32,result);
+        }
+
+        [TestMethod()]
+        public void Calc_EvalDer4()
+        {
+            var sr = new StringReader("1 -0.56 25 35 -7.25 1.5 0.005               000");
+            Console.SetIn(sr);
+            var calculus = new Calculus();
+
+            calculus.SetPolynomial();
+            var result = calculus.EvaluatePolynomialDerivative(2);
+            Assert.AreEqual(3379.485,result);
+        }
     }
 }

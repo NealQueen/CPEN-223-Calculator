@@ -182,7 +182,19 @@ namespace MP2
         /// </exception>
         public double EvaluatePolynomialDerivative(double x)
         {
-            return 0;
+            if ( coefficientList.Count == 0 ) throw new InvalidOperationException("No polynomial is set.");
+
+            double result = 0;
+            for ( int index = 0 ; index < coefficientList.Count ; index++ ) 
+            {   
+                if( coefficientList.Count - index - 1!=0 )
+                {
+                    result += ( coefficientList[index] * ( coefficientList.Count - index - 1 ) * Math.Pow(x,coefficientList.Count - index - 2) );
+                }
+               
+            }
+
+            return result;
         }
 
 
