@@ -13,14 +13,16 @@ namespace MP2
 {
     public class Calculus
     {
-        List<double> coefficientList = new List<double>(); //the only field of this class
+        List<double> coefficientList = new List<double>();
 
-        ///You are allowed to add constructors to be able to unit test.
+
+        /// <summary>
+        /// Constructor to allow unit tests.
+        /// </summary>
         public Calculus()
         {
             coefficientList = new List<double>();
         }
-
 
 
         /// <summary>
@@ -165,7 +167,22 @@ namespace MP2
         /// </exception>
         public List<double> GetAllRoots(double epsilon)
         {
-            return null;
+            if ( coefficientList.Count == 0 ) throw new InvalidOperationException("No polynomial is set.");
+            List<double> Roots = new List<double>();
+
+            for ( int guess = -50 ; guess <=50 ; guess++ )
+            {
+                double currentRoot=NewtonRaphson(guess,epsilon,10);
+                currentRoot = Math.Round(currentRoot,3);
+
+                if ( !Roots.Contains(currentRoot) && !currentRoot.Equals(double.NaN) ) Roots.Add(currentRoot);
+                
+            }
+
+            ///double.NaN is filtered out then readed is because some guesses will go over iterationMax and cause 
+            ///the newtonraphson method to return NaN amongs other roots.
+            if ( coefficientList.Count == 0 ) Roots.Add(double.NaN);
+            return Roots;
         }
 
 
@@ -212,7 +229,15 @@ namespace MP2
         /// </exception>
         public double EvaluatePolynomialIntegral(double a, double b)
         {
-            return 0;
+             if ( coefficientList.Count == 0 ) throw new InvalidOperationException("No polynomial is set.");
+
+            double valueA = 0;
+            double valueB = 0;
+            for ( int index = 0 ; index < coefficientList.Count ; index++ ) valueA += ( coefficientList[index] * Math.Pow(a,coefficientList.Count - index) ) / (coefficientList.Count-index);
+            for ( int index = 0 ; index < coefficientList.Count ; index++ ) valueB += ( coefficientList[index] * Math.Pow(b,coefficientList.Count - index) ) / ( coefficientList.Count - index );
+
+
+            return valueB-valueA;
         }
 
 

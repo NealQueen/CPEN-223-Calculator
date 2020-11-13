@@ -5,9 +5,14 @@ using System.IO;
 
 namespace Tests
 {
+    /// <remarks>
+    /// Throwing exceptions was not tested in some cases as it is handled by the calculator main class and 
+    /// can be easily and repeatedly human tested for different cases.
+    /// </remarks
     [TestClass()]
     public class Mp2_Tests
     {
+        
         [TestMethod()]
         public void Arithmetic1()
         {
@@ -159,5 +164,66 @@ namespace Tests
             var result = calculus.EvaluatePolynomialDerivative(2);
             Assert.AreEqual(3379.485,result);
         }
+
+        [TestMethod()]
+        public void Calc_EvalInte1()
+        {
+            var sr = new StringReader("1 -0.56 25 35 -7.25 1.5 0.005               000");
+            Console.SetIn(sr);
+            var calculus = new Calculus();
+
+            calculus.SetPolynomial();
+            var result = calculus.EvaluatePolynomialIntegral(-1,1);
+            Assert.AreEqual(14.839,result,0.001);
+        }
+
+        [TestMethod()]
+        public void Calc_EvalInte2()
+        {
+            var sr = new StringReader("2 0 1");
+            Console.SetIn(sr);
+            var calculus = new Calculus();
+
+            calculus.SetPolynomial();
+            var result = calculus.EvaluatePolynomialIntegral(2,5);
+            Assert.AreEqual(81,result);
+        }
+
+        [TestMethod()]
+        public void Calc_EvalInte3()
+        {
+            var sr = new StringReader("0");
+            Console.SetIn(sr);
+            var calculus = new Calculus();
+
+            calculus.SetPolynomial();
+            var result = calculus.EvaluatePolynomialIntegral(2,5);
+            Assert.AreEqual(0,result);
+        }
+
+        [TestMethod()]
+        public void Calc_EvalInte4()
+        {
+            var sr = new StringReader("2 0 1");
+            Console.SetIn(sr);
+            var calculus = new Calculus();
+
+            calculus.SetPolynomial();
+            var result = calculus.EvaluatePolynomialIntegral(0,0);
+            Assert.AreEqual(0,result);
+        }
+
+        [TestMethod()]
+        public void Calc_EvalInte5()
+        {
+            var sr = new StringReader("2 0 1");
+            Console.SetIn(sr);
+            var calculus = new Calculus();
+
+            calculus.SetPolynomial();
+            var result = calculus.EvaluatePolynomialIntegral(-1,0);
+            Assert.AreEqual(1.666,result,0.01);
+        }
+
     }
 }
