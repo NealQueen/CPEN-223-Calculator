@@ -1,12 +1,8 @@
-﻿//MP2 Calculator 
-//This file contains the CalculusCalculator class.
-
-//You should implement the requesed methods.
+﻿//~~~~~~~~~~~~~~~~~~~~ MP2 Calculator ~~~~~~~~~~~~~~~~~~~~
 
 
 using System;
 using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace MP2
@@ -86,7 +82,7 @@ namespace MP2
 
             for ( int index = 0 ; index < arr.Length ; index++ )
             {
-                //Digitreader is used although the return is not save because of its reference index function.
+                //DigitReader is used although the return is not save because of its reference index function.
                 if ( arr[index].Equals('-') && Char.IsDigit(arr[index + 1]) && ( index == 0 || !char.IsDigit(arr[index - 1]) ) )
                 {
                     index++;
@@ -117,13 +113,13 @@ namespace MP2
         /// </exception>
         public string GetPolynomial()
         {
+            //stringbuilder used to hold the polynomial as it is being constructed.
             StringBuilder polynomial = new StringBuilder();
 
             for ( int index = 0 ; index < coefficientList.Count ; index++ )
             {
                 if ( index == coefficientList.Count - 1 ) polynomial.Append(coefficientList[index]);
                 else if ( coefficientList[index] != 0) polynomial.Append($"({coefficientList[index]})*X^{( coefficientList.Count - index - 1)} + ");
-             
             }
           
             return polynomial.ToString();
@@ -143,6 +139,7 @@ namespace MP2
         {
             if ( coefficientList.Count == 0 ) throw new InvalidOperationException("No polynomial is set.");
 
+            //for loop that goes through the polynomial component by component and sums the resultants.
             double result=0;
             for ( int index = 0 ; index < coefficientList.Count ; index++ ) result+= (coefficientList[index]*Math.Pow(x,coefficientList.Count-index-1));
 
@@ -170,13 +167,12 @@ namespace MP2
             if ( coefficientList.Count == 0 ) throw new InvalidOperationException("No polynomial is set.");
             List<double> Roots = new List<double>();
 
-            for ( int guess = -50 ; guess <=50 ; guess++ )
+            //loops every guess from -50 -> 50 with 0.5 increments. and adds the unique roots into Roots list.
+            for ( double guess = -50 ; guess <= 50 ; guess+=0.5 )
             {
                 double currentRoot=NewtonRaphson(guess,epsilon,10);
-                currentRoot = Math.Round(currentRoot,3);
-
-                if ( !Roots.Contains(currentRoot) && !currentRoot.Equals(double.NaN) ) Roots.Add(currentRoot);
                 
+                if ( !currentRoot.Equals(double.NaN) && !ExistsInList(Roots, currentRoot,0.001) ) Roots.Add(currentRoot);
             }
 
             ///double.NaN is filtered out then readed is because some guesses will go over iterationMax and cause 
@@ -202,13 +198,11 @@ namespace MP2
             if ( coefficientList.Count == 0 ) throw new InvalidOperationException("No polynomial is set.");
 
             double result = 0;
-            for ( int index = 0 ; index < coefficientList.Count ; index++ ) 
+
+            //loop skips the last component (which defaults to zero).
+            for ( int index = 0 ; index < coefficientList.Count-1 ; index++ ) 
             {   
-                if( coefficientList.Count - index - 1!=0 )
-                {
-                    result += ( coefficientList[index] * ( coefficientList.Count - index - 1 ) * Math.Pow(x,coefficientList.Count - index - 2) );
-                }
-               
+              result += ( coefficientList[index] * ( coefficientList.Count - index - 1 ) * Math.Pow(x,coefficientList.Count - index - 2) );
             }
 
             return result;
@@ -229,8 +223,9 @@ namespace MP2
         /// </exception>
         public double EvaluatePolynomialIntegral(double a, double b)
         {
-             if ( coefficientList.Count == 0 ) throw new InvalidOperationException("No polynomial is set.");
+            if ( coefficientList.Count == 0 ) throw new InvalidOperationException("No polynomial is set.");
 
+            //Calculates each branch of the integral seperatly then returns the difference.
             double valueA = 0;
             double valueB = 0;
             for ( int index = 0 ; index < coefficientList.Count ; index++ ) valueA += ( coefficientList[index] * Math.Pow(a,coefficientList.Count - index) ) / (coefficientList.Count-index);
@@ -257,6 +252,7 @@ namespace MP2
         /// </returns>
         public double NewtonRaphson(double guess,double epsilon,int iterationMax)
         {
+            //This method was not changed from the original given method.
             int count = 0;
             double x = guess;
 
@@ -272,6 +268,23 @@ namespace MP2
             }
 
             return Math.Round(x,4); //4 decimal places
+        }
+
+
+        /// <summary>
+        /// Helper method that checks if a given double exists within a given List.
+        /// </summary>
+        /// <param name="list"> The list of doubles in which the method looks in.</param>
+        /// <param name="valueToCheck"> The value of interest. </param>
+        /// <param name="epsilon"> The error allowed when comparing. </param>
+        /// <returns> True if the value exists, false otherwise. </returns>
+        public bool ExistsInList(List<double> list, double valueToCheck, double epsilon)
+        { 
+            bool indicator = false;
+
+            foreach ( double item in list ) if ( Math.Abs(valueToCheck - item) < epsilon ) indicator = true;
+            
+            return indicator;
         }
     }
 }

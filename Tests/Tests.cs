@@ -1,14 +1,18 @@
+//~~~~~~~~~~~~~~~~~~~~ Unit Tests ~~~~~~~~~~~~~~~~~~~~
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MP2;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Tests
 {
     /// <remarks>
-    /// Throwing exceptions was not tested in some cases as it is handled by the calculator main class and 
-    /// can be easily and repeatedly human tested for different cases.
-    /// </remarks
+    ///  - Throwing exceptions was not tested in some cases as it is handled by the calculator main class and 
+    ///         can be easily and repeatedly human tested for different cases.
+    ///  - Get roots was tested manually.
+    /// </remarks>
     [TestClass()]
     public class Mp2_Tests
     {
@@ -225,5 +229,71 @@ namespace Tests
             Assert.AreEqual(1.666,result,0.01);
         }
 
+        [TestMethod()]
+        public void Calc_Roots1()
+        {
+            var sr = new StringReader("1 0 -9");
+            Console.SetIn(sr);
+            var calculus = new Calculus();
+            List<double> expected = new List<double>() { -3, 3};
+
+            calculus.SetPolynomial();
+            var result = calculus.GetAllRoots(0.000001);
+            CollectionAssert.AreEquivalent(expected,result);
+        }
+
+        [TestMethod()]
+        public void Calc_Roots2()
+        {
+            var sr = new StringReader("-5 9 15");
+            Console.SetIn(sr);
+            var calculus = new Calculus();
+            List<double> expected = new List<double>() {2.8519,-1.0519};
+
+            calculus.SetPolynomial();
+            var result = calculus.GetAllRoots(0.000001);
+            CollectionAssert.AreEquivalent(expected,result);
+        }
+
+        [TestMethod()]
+        public void Calc_Roots3()
+        {
+            var sr = new StringReader("20 50 6 -0.5 6");
+            Console.SetIn(sr);
+            var calculus = new Calculus();
+            List<double> expected = new List<double>() { -0.6086,-2.3442 };
+
+            calculus.SetPolynomial();
+            var result = calculus.GetAllRoots(0.000001);
+            CollectionAssert.AreEquivalent(expected,result);
+        }
+
+        [TestMethod()]
+        public void Calc_Roots4()
+        {   
+            //This was not fun to calculate.
+            var sr = new StringReader("1 2 -55 89 0 -44 0 0 5 0 -5");
+            Console.SetIn(sr);
+            var calculus = new Calculus();
+            List<double> expected = new List<double>() { -9.1065, 5.2804};
+
+            calculus.SetPolynomial();
+            var result = calculus.GetAllRoots(0.000001);
+            CollectionAssert.AreEquivalent(expected,result);
+        }
+
+        [TestMethod()]
+        public void Calc_Roots5()
+        {
+            var sr = new StringReader("1 -23.11 2.533 -0.069");
+            Console.SetIn(sr);
+            var calculus = new Calculus();
+            List<double> expected = new List<double>() { 0.05, 0.06, 23 };
+            
+            calculus.SetPolynomial();
+            var result = calculus.GetAllRoots(0.000001);
+            CollectionAssert.AreEquivalent(expected,result);
+            
+        }
     }
 }

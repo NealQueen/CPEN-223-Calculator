@@ -1,7 +1,4 @@
-﻿//MP2 Calculator 
-//This file contains the Arithmethic class.
-
-//You should implement the requesed method.
+﻿//~~~~~~~~~~~~~~~~~~~~ Arithmetic Calculator ~~~~~~~~~~~~~~~~~~~~
 
 using System;
 using System.Collections.Generic;
